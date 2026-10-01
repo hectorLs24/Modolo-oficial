@@ -1,0 +1,6 @@
+{
+  "name": "Lectura Beta 1.0 - Reading Tracker",
+  "description": "Plataforma de seguimiento de lectura con gestión de libros, registro de sesiones con cronómetro y sistema de metas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
