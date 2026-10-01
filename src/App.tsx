@@ -16,10 +16,12 @@ import { ManualSessionModal } from './components/ManualSessionModal';
 import { FinishSessionModal } from './components/FinishSessionModal';
 import { ActiveTimerFloatingBar } from './components/ActiveTimerFloatingBar';
 import { OpenLibrarySearchModal } from './components/OpenLibrarySearchModal';
+import { AIToolsScreen, AISubTab } from './components/AIToolsScreen';
 
 function AppContent() {
   const { startActiveSession } = useReading();
   const [currentScreen, setCurrentScreen] = useState<MainScreen>('books');
+  const [aiSubTab, setAiSubTab] = useState<AISubTab>('recommendations');
 
   // Modals state
   const [isAddBookOpen, setIsAddBookOpen] = useState(false);
@@ -36,6 +38,11 @@ function AppContent() {
   const handleStartSession = (bookId: string) => {
     startActiveSession(bookId);
     setCurrentScreen('sessions');
+  };
+
+  const handleNavigateToAI = (subTab: AISubTab = 'recommendations') => {
+    setAiSubTab(subTab);
+    setCurrentScreen('ai_tools');
   };
 
   return (
@@ -77,6 +84,7 @@ function AppContent() {
               onOpenManualSession={handleOpenManualSession}
               onOpenAddBook={() => setIsAddBookOpen(true)}
               onOpenOpenLibrarySearch={() => setIsOpenLibraryOpen(true)}
+              onNavigateToAI={handleNavigateToAI}
             />
           </section>
         )}
@@ -114,7 +122,14 @@ function AppContent() {
           </section>
         )}
 
-        {/* Screen 4: Racha con date-fns, Días de Gracia, Metas y Storage Dexie */}
+        {/* Screen 4: IA Lectora & Aprendizaje (Beta 3.0: Recomendaciones responseSchema, Chat de notas, Quiz formativo) */}
+        {currentScreen === 'ai_tools' && (
+          <section aria-labelledby="ai-heading">
+            <AIToolsScreen initialSubTab={aiSubTab} />
+          </section>
+        )}
+
+        {/* Screen 5: Racha con date-fns, Días de Gracia, Metas y Storage Dexie */}
         {currentScreen === 'streaks_goals' && (
           <section aria-labelledby="streaks-heading">
             <StreakAndGoalsScreen />

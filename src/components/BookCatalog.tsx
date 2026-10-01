@@ -20,6 +20,7 @@ interface BookCatalogProps {
   onOpenManualSession: (bookId: string) => void;
   onOpenAddBook: () => void;
   onOpenOpenLibrarySearch?: () => void;
+  onNavigateToAI?: (subTab: 'recommendations' | 'chat' | 'quiz') => void;
 }
 
 export const BookCatalog: React.FC<BookCatalogProps> = ({
@@ -27,6 +28,7 @@ export const BookCatalog: React.FC<BookCatalogProps> = ({
   onOpenManualSession,
   onOpenAddBook,
   onOpenOpenLibrarySearch,
+  onNavigateToAI,
 }) => {
   const {
     state,
@@ -209,15 +211,28 @@ export const BookCatalog: React.FC<BookCatalogProps> = ({
                   {/* Top card bar: Color spine accent + Title + Menu */}
                   <div className="flex items-start gap-3.5">
                     {/* Visual book spine / cover chip */}
-                    <div
-                      className="w-11 h-15 rounded-md shadow-xs shrink-0 flex flex-col justify-between p-1.5 text-white/90 border border-black/10"
-                      style={{ backgroundColor: book.coverColor || '#334155' }}
-                    >
-                      <span className="text-[9px] font-serif font-bold uppercase tracking-wider line-clamp-1">
-                        {book.title.slice(0, 10)}
-                      </span>
-                      <div className="w-full h-0.5 bg-white/30 rounded-full" />
-                    </div>
+                    {book.coverUrl ? (
+                      <img
+                        src={book.coverUrl}
+                        alt={`Carátula de ${book.title}`}
+                        className="w-11 h-15 rounded-md object-cover shadow-xs shrink-0 border border-stone-200 bg-stone-100"
+                        loading="lazy"
+                        onError={(e) => {
+                          // Si falla la carga de la imagen remota, ocultar y mostrar color de fondo
+                          (e.currentTarget as HTMLElement).style.display = 'none';
+                        }}
+                      />
+                    ) : (
+                      <div
+                        className="w-11 h-15 rounded-md shadow-xs shrink-0 flex flex-col justify-between p-1.5 text-white/90 border border-black/10"
+                        style={{ backgroundColor: book.coverColor || '#334155' }}
+                      >
+                        <span className="text-[9px] font-serif font-bold uppercase tracking-wider line-clamp-1">
+                          {book.title.slice(0, 10)}
+                        </span>
+                        <div className="w-full h-0.5 bg-white/30 rounded-full" />
+                      </div>
+                    )}
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
@@ -238,7 +253,7 @@ export const BookCatalog: React.FC<BookCatalogProps> = ({
                           </button>
 
                           {isMenuOpen && (
-                            <div className="absolute right-0 top-7 w-44 bg-white border border-stone-200 rounded-lg shadow-lg py-1 z-20 animate-in fade-in zoom-in-95 text-xs">
+                            <div className="absolute right-0 top-7 w-48 bg-white border border-stone-200 rounded-lg shadow-lg py-1 z-20 animate-in fade-in zoom-in-95 text-xs">
                               <button
                                 onClick={() => {
                                   setBookStatus(
@@ -260,6 +275,31 @@ export const BookCatalog: React.FC<BookCatalogProps> = ({
                               >
                                 Registrar sesión manual
                               </button>
+                              {onNavigateToAI && (
+                                <>
+                                  <div className="h-px bg-stone-100 my-1" />
+                                  <button
+                                    onClick={() => {
+                                      setMenuOpenBookId(null);
+                                      onNavigateToAI('chat');
+                                    }}
+                                    className="w-full text-left px-3 py-1.5 hover:bg-amber-50 text-amber-900 flex items-center gap-1.5"
+                                  >
+                                    <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                                    <span>Dialogar sobre notas</span>
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      setMenuOpenBookId(null);
+                                      onNavigateToAI('quiz');
+                                    }}
+                                    className="w-full text-left px-3 py-1.5 hover:bg-amber-50 text-amber-900 flex items-center gap-1.5"
+                                  >
+                                    <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                                    <span>Quiz formativo</span>
+                                  </button>
+                                </>
+                              )}
                               <div className="h-px bg-stone-100 my-1" />
                               <button
                                 onClick={() => {

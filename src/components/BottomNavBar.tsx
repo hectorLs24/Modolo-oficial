@@ -1,8 +1,8 @@
 import React from 'react';
-import { BookOpen, Timer, BarChart2, Flame } from 'lucide-react';
+import { BookOpen, Timer, BarChart2, Flame, Sparkles } from 'lucide-react';
 import { useReading } from '../context/ReadingContext';
 
-export type MainScreen = 'books' | 'sessions' | 'analytics' | 'streaks_goals';
+export type MainScreen = 'books' | 'sessions' | 'analytics' | 'ai_tools' | 'streaks_goals';
 
 interface BottomNavBarProps {
   currentScreen: MainScreen;
@@ -20,7 +20,7 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
   currentScreen,
   onSelectScreen,
 }) => {
-  const { state, stats } = useReading();
+  const { state } = useReading();
 
   const navItems: NavItem[] = [
     {
@@ -40,8 +40,13 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
       icon: BarChart2,
     },
     {
+      id: 'ai_tools',
+      label: 'IA Lectora',
+      icon: Sparkles,
+    },
+    {
       id: 'streaks_goals',
-      label: 'Racha & Metas',
+      label: 'Racha',
       icon: Flame,
     },
   ];
@@ -52,7 +57,7 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
       aria-label="Navegación principal de la aplicación"
       className="fixed bottom-0 left-0 right-0 z-40 bg-stone-50/95 backdrop-blur-md border-t border-stone-200 shadow-lg pb-safe"
     >
-      <div className="max-w-md mx-auto grid grid-cols-4 items-center h-16 px-2">
+      <div className="max-w-lg mx-auto grid grid-cols-5 items-center h-16 px-1">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = currentScreen === item.id;
@@ -62,7 +67,7 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
               key={item.id}
               onClick={() => onSelectScreen(item.id)}
               aria-current={isActive ? 'page' : undefined}
-              className={`min-h-[48px] min-w-[48px] flex flex-col items-center justify-center relative rounded-xl transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 focus-visible:ring-offset-2 ${
+              className={`min-h-[48px] min-w-[44px] flex flex-col items-center justify-center relative rounded-xl transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 focus-visible:ring-offset-2 ${
                 isActive
                   ? 'text-stone-900 font-semibold'
                   : 'text-stone-500 hover:text-stone-800'
@@ -85,7 +90,7 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
               </div>
 
               <span
-                className={`text-[10px] mt-1 tracking-tight truncate max-w-[80px] ${
+                className={`text-[10px] mt-1 tracking-tight truncate max-w-[72px] ${
                   isActive ? 'font-bold text-stone-900' : 'font-medium text-stone-500'
                 }`}
               >

@@ -32,7 +32,7 @@ export const Header: React.FC<HeaderProps> = ({
           <span className="font-serif text-xl font-bold tracking-tight text-stone-900">
             Lectura{' '}
             <span className="font-sans text-[11px] font-semibold tracking-wider text-amber-800 uppercase ml-1">
-              Beta 2.0
+              Beta 3.0
             </span>
           </span>
         </div>
@@ -81,6 +81,18 @@ export const Header: React.FC<HeaderProps> = ({
             }`}
           >
             Métricas SVG
+          </button>
+          <button
+            onClick={() => onSelectScreen('ai_tools')}
+            aria-current={currentScreen === 'ai_tools' ? 'page' : undefined}
+            className={`min-h-[44px] px-3.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 ${
+              currentScreen === 'ai_tools'
+                ? 'bg-amber-100 text-amber-950 font-bold'
+                : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-700" />
+            <span>IA Lectora</span>
           </button>
           <button
             onClick={() => onSelectScreen('streaks_goals')}
